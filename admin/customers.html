@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers - HILTON CARGO Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../home-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../home-assets/css/fontawesome-all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .sidebar {
+            position: fixed;
+            left:0;
+            top:0;
+            height:100vh;
+            width:260px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index:1000;
+            overflow-y:auto;
+        }
+
+        .sidebar-header {
+            padding:30px 20px;
+            text-align:center;
+            border-bottom:1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            width:80px;
+            height:80px;
+            margin:0 auto 15px;
+            background:white;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .sidebar-logo img {
+            width:60px;
+            height:60px;
+            object-fit: contain;
+        }
+
+        .sidebar-title {
+            color:white;
+            font-weight:700;
+            font-size:20px;
+        }
+
+        .sidebar-menu {
+            padding:20px 0;
+        }
+
+        .menu-item {
+            display:block;
+            padding:15px 25px;
+            color:rgba(255,255,255,0.85);
+            text-decoration:none;
+            transition: all 0.3s ease;
+            border-left:3px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            color:white;
+            border-left-color:#fbbf24;
+        }
+
+        .menu-item i {
+            width:25px;
+            margin-right:12px;
+        }
+
+        .main-content {
+            margin-left:260px;
+            min-height:100vh;
+        }
+
+        .top-navbar {
+            background:white;
+            padding:15px 30px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        .navbar-search {
+            flex:1;
+            max-width:400px;
+        }
+
+        .search-input {
+            width:100%;
+            padding:10px 20px;
+            border:1px solid #e2e8f0;
+            border-radius:25px;
+            font-size:14px;
+        }
+
+        .navbar-actions {
+            display:flex;
+            align-items:center;
+            gap:20px;
+        }
+
+        .notification-bell {
+            font-size:20px;
+            color:#64748b;
+            cursor:pointer;
+            position:relative;
+        }
+
+        .notification-dot {
+            position:absolute;
+            top:-5px;
+            right:-5px;
+            width:10px;
+            height:10px;
+            background:#ef4444;
+            border-radius:50%;
+        }
+
+        .user-profile {
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .user-avatar {
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            background:linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-weight:700;
+        }
+
+        .page-content {
+            padding:30px;
+        }
+
+        .page-header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .page-title {
+            font-size:28px;
+            font-weight:700;
+            color:#1e293b;
+        }
+
+        .card {
+            background:white;
+            border-radius:15px;
+            padding:25px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .btn {
+            padding:8px 18px;
+            border:none;
+            border-radius:8px;
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            text-decoration:none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color:white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color:white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color:white;
+        }
+
+        .table-responsive {
+            overflow-x:auto;
+        }
+
+        table {
+            width:100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background:#f8fafc;
+        }
+
+        th {
+            padding:14px 16px;
+            text-align:left;
+            font-size:13px;
+            font-weight:700;
+            color:#475569;
+            text-transform:uppercase;
+            letter-spacing:0.5px;
+        }
+
+        td {
+            padding:14px 16px;
+            border-bottom:1px solid #f1f5f9;
+            color:#475569;
+            font-size:14px;
+        }
+
+        tr:hover td {
+            background:#f8fafc;
+        }
+
+        .customer-avatar {
+            width:45px;
+            height:45px;
+            border-radius:50%;
+            background:linear-gradient(135deg, #3b82f6, #1e40af);
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+        }
+
+        .menu-toggle {
+            display:none;
+            background:none;
+            border:none;
+            font-size:24px;
+            color:#1e293b;
+            cursor:pointer;
+        }
+
+        @media (max-width:992px) {
+            .sidebar {
+                left:-260px;
+            }
+            .sidebar.open {
+                left:0;
+            }
+            .main-content {
+                margin-left:0;
+            }
+            .menu-toggle {
+                display:block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <img src="../images/hiltonlogo.png" alt="Logo">
+            </div>
+            <div class="sidebar-title">HILTON CARGO</div>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="index.html" class="menu-item"><i class="fas fa-th-large"></i>Dashboard</a>
+            <a href="shipments.html" class="menu-item"><i class="fas fa-shipping-fast"></i>Shipments</a>
+            <a href="tracking.html" class="menu-item"><i class="fas fa-map-marker-alt"></i>Tracking</a>
+            <a href="customers.html" class="menu-item active"><i class="fas fa-users"></i>Customers</a>
+            <a href="services.html" class="menu-item"><i class="fas fa-concierge-bell"></i>Services</a>
+            <a href="reports.html" class="menu-item"><i class="fas fa-chart-bar"></i>Reports</a>
+            <a href="settings.html" class="menu-item"><i class="fas fa-cog"></i>Settings</a>
+            <a href="../index.htm" class="menu-item"><i class="fas fa-arrow-left"></i>Back to Website</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-navbar">
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div class="navbar-search">
+                <input type="text" class="search-input" placeholder="Search customers...">
+            </div>
+            <div class="navbar-actions">
+                <div class="notification-bell"><i class="fas fa-bell"></i><span class="notification-dot"></span></div>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div>
+                        <strong style="font-size:14px;">Admin</strong><br>
+                        <small style="color:#64748b;">Administrator</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="page-content">
+            <div class="page-header">
+                <h1 class="page-title">Customers</h1>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New Customer
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>City</th>
+                                <th>Total Shipments</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <div class="customer-avatar">JD</div>
+                                        <div><strong>John Doe</strong></div>
+                                    </div>
+                                </td>
+                                <td>john.doe@example.com</td>
+                                <td>+1 555 123 4567</td>
+                                <td>New York, NY</td>
+                                <td>12</td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;">View</button>
+                                    <button class="btn btn-success" style="padding:5px 10px; font-size:12px;">Edit</button>
+                                    <button class="btn btn-danger" style="padding:5px 10px; font-size:12px;">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <div class="customer-avatar" style="background: linear-gradient(135deg, #22c55e, #166534);">JS</div>
+                                        <div><strong>Jane Smith</strong></div>
+                                    </div>
+                                </td>
+                                <td>jane.smith@example.com</td>
+                                <td>+1 555 987 6543</td>
+                                <td>Los Angeles, CA</td>
+                                <td>8</td>
+                                <td>
+                                    <button class="btn btn-primary" style="padding:5px 10px; font-size:12px;">View</button>
+                                    <button class="btn btn-success" style="padding:5px 10px; font-size:12px;">Edit</button>
+                                    <button class="btn btn-danger" style="padding:5px 10px; font-size:12px;">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../home-assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
